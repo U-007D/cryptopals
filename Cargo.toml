@@ -1,10 +1,16 @@
 [package]
+authors = ["bRad <brad@humanenginuity.com>"]
 name = "cryptopals"
 version = "0.1.0"
-authors = ["bRad <brad@humanenginuity.com>"]
 
 [dependencies]
 
+[dependencies.fluent_validator]
+git = "https://github.com/U-007D/fluent_validator.git"
+optional = false
+
+[profile]
+
 [profile.release]
-opt-level = 3
 lto = true
+opt-level = 3
