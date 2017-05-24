@@ -5,12 +5,29 @@ type Result<T> = std::result::Result<T, Error>;
 #[cfg(test)] mod unit_tests;
 
 #[derive(Debug, PartialEq, Eq)]
-pub struct HexByteStrValidator<'a> {
+pub struct HexByteStr<'a> {
     value: &'a str,
 }
 
-impl<'a> Validator<&'a str> for HexByteStrValidator<'a> {
-    fn validate(v: &'a str) -> Result<Self> where Self: Sized {
+#[derive(Debug, PartialEq, Eq)]
+pub struct ByteBuffer;
+
+impl<'a> HexByteStr<'a> {
+    pub fn new(init_value: &str) -> Result<HexByteStr> {
+        Ok(HexByteStr { value: init_value.validate::<HexByteStr>()? })
+    }
+
+    pub fn as_hex_byte_str(&self) -> &'a str {
+        self.value
+    }
+
+    pub fn as_byte_buffer(&self) -> ByteBuffer {
+        ByteBuffer
+    }
+}
+
+impl<'a> Validator<&'a str> for HexByteStr<'a> {
+    fn validate(v: &'a str) -> Result<&'a str> where Self: Sized {
         match None
             .or_else(
                 || match !v.is_empty() {
@@ -32,7 +49,7 @@ impl<'a> Validator<&'a str> for HexByteStrValidator<'a> {
                     true => None,
                     false => Some(fluent_validator::Error::InvalidSize(String::new())),
                 }) {
-            None => Ok(HexByteStrValidator { value: v }),
+            None => Ok(v),
             Some(e) => Err(e),
         }
     }

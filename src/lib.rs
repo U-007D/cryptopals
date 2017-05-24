@@ -8,6 +8,7 @@ extern crate fluent_validator;
 
 mod consts;
 mod hex_byte_str;
+use hex_byte_str::*;
 
 #[cfg(test)]
 mod unit_tests;
