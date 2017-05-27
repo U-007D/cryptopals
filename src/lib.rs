@@ -7,10 +7,13 @@
 extern crate fluent_validator;
 
 mod consts;
-mod hex_byte_str;
-use hex_byte_str::*;
+use consts::*;
+mod byte_buffer;
+use byte_buffer::ByteBuffer;
+mod hex_byte_string;
+use hex_byte_string::HexByteString;
 
 #[cfg(test)]
 mod unit_tests;
 
-use fluent_validator::{FluentValidator, Validator, Error};
+use fluent_validator::{FluentValidator, Validator};

@@ -1,0 +1,11 @@
+pub const HEX_A_VALUE: u8 = 0x0a;
+pub const UTF8_0_VALUE: u8 = b'0' as u8;
+pub const UTF8_9_VALUE: u8 = b'9' as u8;
+pub const UTF8_UPPER_A_VALUE: u8 = b'A' as u8;
+pub const UTF8_UPPER_F_VALUE: u8 = b'F' as u8;
+pub const UTF8_LOWER_A_VALUE: u8 = b'a' as u8;
+pub const UTF8_LOWER_F_VALUE: u8 = b'f' as u8;
+pub const BITS_PER_NIBBLE: u8 = 4;
+pub const HIGH_NIBBLE_MASK: u8 = 0x0f;
+pub const HEX_BYTE_CHARS_MSN: usize = 0;
+pub const HEX_BYTE_CHARS_LSN: usize = 1;
