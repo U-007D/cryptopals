@@ -55,8 +55,10 @@ impl<'a> ByteBuffer {
     fn hex_char_into_value(ch: char) -> u8 {
         match ch as u8 {
             v @ consts::UTF8_0_VALUE...consts::UTF8_9_VALUE => v - consts::UTF8_0_VALUE,
-            v @ consts::UTF8_UPPER_A_VALUE...consts::UTF8_UPPER_F_VALUE => v - consts::UTF8_UPPER_A_VALUE,
-            v @ consts::UTF8_LOWER_A_VALUE...consts::UTF8_LOWER_F_VALUE => v - consts::UTF8_LOWER_A_VALUE,
+            v @ consts::UTF8_UPPER_A_VALUE...consts::UTF8_UPPER_F_VALUE =>
+                    v - consts::UTF8_UPPER_A_VALUE + consts::HEX_A_VALUE,
+            v @ consts::UTF8_LOWER_A_VALUE...consts::UTF8_LOWER_F_VALUE =>
+                    v - consts::UTF8_LOWER_A_VALUE + consts::HEX_A_VALUE,
             _ => unreachable!(),
         }
     }
