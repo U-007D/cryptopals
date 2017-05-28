@@ -7,6 +7,5 @@
 #[cfg(test)] mod unit_tests;
 
 extern crate fluent_validator;
-use fluent_validator::Error;
 
 mod hex_byte_string;
