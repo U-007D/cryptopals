@@ -15,4 +15,9 @@ impl HexByteString {
     pub fn new<T: AsRef<str>>(value: T) -> Result<HexByteString> {
         Ok(HexByteString(value.as_ref().validate::<HexByteString>()?.to_string()))
     }
+
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
 }
+

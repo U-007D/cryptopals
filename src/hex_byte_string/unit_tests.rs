@@ -23,3 +23,12 @@ fn new_rejects_illegal_hex_digit() {
     let input = "abcdefgh";
     assert!(if let Some(Error::IllegalValue(_)) = HexByteString::new(input).err() { true } else { false });
 }
+
+
+#[test]
+fn implements_as_str() {
+    let input = "c0debeef";
+    let expected_result = input.clone();
+
+    assert!(HexByteString::new(input).unwrap().as_str() == expected_result);
+}
