@@ -4,6 +4,7 @@ use super::fluent_validator::{FluentValidator, Error};
 pub mod validator;
 
 use std;
+use std::fmt;
 type Result<T> = std::result::Result<T, Error>;
 
 #[cfg(test)] mod unit_tests;
@@ -18,6 +19,12 @@ impl HexByteString {
 
     pub fn as_str(&self) -> &str {
         &self.0
+    }
+}
+
+impl fmt::Display for HexByteString {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.0)
     }
 }
 

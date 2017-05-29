@@ -24,7 +24,6 @@ fn new_rejects_illegal_hex_digit() {
     assert!(if let Some(Error::IllegalValue(_)) = HexByteString::new(input).err() { true } else { false });
 }
 
-
 #[test]
 fn implements_as_str() {
     let input = "c0debeef";
@@ -32,10 +31,19 @@ fn implements_as_str() {
 
     assert!(HexByteString::new(input).unwrap().as_str() == expected_result);
 }
+
 #[test]
 fn implements_from_trait_for_string() {
     let input = "deadbeef";
     let expected_result = input.clone().to_string();
 
     assert!(String::from(HexByteString::new(input).unwrap()) == expected_result);
+}
+
+#[test]
+fn implements_to_string() {
+    let input = "deadc0de";
+    let expected_result = input.clone().to_string();
+
+    assert!(HexByteString::new(input).unwrap().to_string() == expected_result);
 }
