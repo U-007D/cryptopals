@@ -10,19 +10,19 @@ impl<T: AsRef<str>> Validator<T> for HexByteString {
     fn validate(value: T) -> Result<T> {
         Ok(value.as_ref())
 
-            //value contains data
+            //value contains data?
             .and_then(|v| match !v.is_empty() {
                 true => Ok(v),
                 false => Err(Error::EmptyValue(msgs::VALDN_ERR_EMPTY_VALUE.to_string())),
             })
 
-            //value defines whole bytes (contains an even number of hex digits)
+            //value defines whole bytes (contains an even number of hex digits)?
             .and_then(|v| match v.len() % 2 == 0 {
                 true => Ok(v),
                 false => Err(Error::InvalidSize(msgs::VALDN_ERR_INVALID_SIZE.to_string())),
             })
 
-            //value contains only valid hexadecimal characters
+            //value contains only valid hexadecimal characters?
             .and_then(|v| match v.chars()
                                  .all(|c| match c {
                                      '0' ... '9' |

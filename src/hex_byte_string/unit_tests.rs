@@ -47,3 +47,13 @@ fn implements_from_trait_for_string() {
 
     assert!(String::from(HexByteString::new(input).unwrap()) == expected_result);
 }
+
+#[test]
+fn hex_digit_char_pair_iterator() {
+    let mut input = HexByteString::new("1234").unwrap().into_iter();
+    let expected_results = [Some(('1', '2')), Some(('3', '4')), None];
+
+    assert!(input.next() == expected_results[0]);
+    assert!(input.next() == expected_results[1]);
+    assert!(input.next() == expected_results[2]);
+}

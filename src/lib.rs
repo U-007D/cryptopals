@@ -7,6 +7,7 @@
 #[cfg(test)] mod unit_tests;
 
 extern crate fluent_validator;
+extern crate owned_chars;
 
 mod hex_byte_string;
 mod byte_buffer;
