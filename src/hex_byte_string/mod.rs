@@ -21,3 +21,8 @@ impl HexByteString {
     }
 }
 
+impl From<HexByteString> for String {
+    fn from(hex_byte_string: HexByteString) -> Self {
+        hex_byte_string.0
+    }
+}

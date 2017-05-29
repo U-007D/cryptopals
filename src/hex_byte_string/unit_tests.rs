@@ -32,3 +32,10 @@ fn implements_as_str() {
 
     assert!(HexByteString::new(input).unwrap().as_str() == expected_result);
 }
+#[test]
+fn implements_from_trait_for_string() {
+    let input = "deadbeef";
+    let expected_result = input.clone().to_string();
+
+    assert!(String::from(HexByteString::new(input).unwrap()) == expected_result);
+}
