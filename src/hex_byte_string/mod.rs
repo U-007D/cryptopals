@@ -1,21 +1,18 @@
-#[cfg(test)] mod unit_tests;
-
 mod consts;
 use self::consts::msgs;
-use super::fluent_validator::Error;
+use super::fluent_validator::{FluentValidator, Error};
+mod validator;
 
 use std;
-
 type Result<T> = std::result::Result<T, Error>;
 
+#[cfg(test)] mod unit_tests;
+
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct HexByteString(String);
 
 impl HexByteString {
-    pub fn new<T: Into<String>>(init_value: T) -> Result<HexByteString> {
-        let init_value = init_value.into();
-        match init_value == String::new() {
-            true => Err(Error::EmptyValue(msgs::ERR_EMPTY_VALUE.to_string())),
-            false => Ok(HexByteString(init_value)),
-        }
+    pub fn new<T: AsRef<str>>(value: T) -> Result<HexByteString> {
+        Ok(HexByteString(value.as_ref().validate::<HexByteString>()?.to_string()))
     }
 }
