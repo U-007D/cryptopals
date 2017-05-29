@@ -4,6 +4,8 @@ use fluent_validator::Validator;
 
 type Result<T> = std::result::Result<T, Error>;
 
+#[cfg(test)] mod unit_tests;
+
 impl<T: AsRef<str>> Validator<T> for HexByteString {
     fn validate(value: T) -> Result<T> {
         Ok(value.as_ref())

@@ -1,7 +1,7 @@
 mod consts;
 use self::consts::msgs;
 use super::fluent_validator::{FluentValidator, Error};
-mod validator;
+pub mod validator;
 
 use std;
 type Result<T> = std::result::Result<T, Error>;
