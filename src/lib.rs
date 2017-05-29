@@ -9,3 +9,4 @@
 extern crate fluent_validator;
 
 mod hex_byte_string;
+mod byte_buffer;

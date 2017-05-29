@@ -33,17 +33,17 @@ fn implements_as_str() {
 }
 
 #[test]
-fn implements_from_trait_for_string() {
-    let input = "deadbeef";
-    let expected_result = input.clone().to_string();
-
-    assert!(String::from(HexByteString::new(input).unwrap()) == expected_result);
-}
-
-#[test]
 fn implements_to_string() {
     let input = "deadc0de";
     let expected_result = input.clone().to_string();
 
     assert!(HexByteString::new(input).unwrap().to_string() == expected_result);
+}
+
+#[test]
+fn implements_from_trait_for_string() {
+    let input = "deadbeef";
+    let expected_result = input.clone().to_string();
+
+    assert!(String::from(HexByteString::new(input).unwrap()) == expected_result);
 }
