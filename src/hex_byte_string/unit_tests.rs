@@ -17,3 +17,9 @@ fn new_rejects_odd_length_hex_input() {
     let input = "f";
     assert!(if let Some(Error::InvalidSize(_)) = HexByteString::new(input).err() { true } else { false });
 }
+
+#[test]
+fn new_rejects_illegal_hex_digit() {
+    let input = "abcdefgh";
+    assert!(if let Some(Error::IllegalValue(_)) = HexByteString::new(input).err() { true } else { false });
+}

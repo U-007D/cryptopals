@@ -31,3 +31,11 @@ fn rejects_odd_length_str() {
 
     assert!(input.validate::<HexByteString>() == expected_result);
 }
+
+#[test]
+fn rejects_invalid_hex_char_in_str() {
+    let input = "12345x";
+    let expected_result = Err(Error::IllegalValue(msgs::VALDN_ERR_ILLEGAL_HEX_DIGIT.to_string()));
+
+    assert!(input.validate::<HexByteString>() == expected_result);
+}
