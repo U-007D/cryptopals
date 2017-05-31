@@ -85,3 +85,12 @@ impl Iterator for IntoIter {
         }
     }
 }
+
+impl<'a> IntoIterator for &'a HexByteString {
+    type Item = CharPair;
+    type IntoIter = Iter<'a>;
+
+    fn into_iter(self) -> Iter<'a> {
+        self.iter()
+    }
+}
