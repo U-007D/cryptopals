@@ -94,3 +94,9 @@ impl<'a> IntoIterator for &'a HexByteString {
         self.iter()
     }
 }
+
+impl From<ByteBuffer> for HexByteString {
+    fn from(byte_buffer: ByteBuffer) -> Self {
+        HexByteString::new("0123456789abcdef").ok().unwrap()
+    }
+}

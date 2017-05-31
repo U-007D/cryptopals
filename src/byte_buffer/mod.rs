@@ -2,6 +2,7 @@ use hex_byte_string::HexByteString;
 
 #[cfg(test)] mod unit_tests;
 
+#[derive(Debug)]
 pub struct ByteBuffer(Vec<u8>);
 
 impl ByteBuffer {

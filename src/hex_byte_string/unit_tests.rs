@@ -57,3 +57,12 @@ fn hex_digit_char_pair_iterator() {
     assert!(input.next() == expected_results[1]);
     assert!(input.next() == expected_results[2]);
 }
+
+#[test]
+fn from_byte_buffer_succeeds() {
+    let hex_byte_str = HexByteString::new("0123456789abcdef").ok().unwrap();
+    let input = ByteBuffer::from(hex_byte_str.clone());
+    let expected_result = hex_byte_str;
+
+    assert!(HexByteString::from(input) == expected_result);
+}

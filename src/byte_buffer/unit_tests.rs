@@ -8,3 +8,4 @@ fn from_hex_byte_string_succeeds() {
 
     assert!(ByteBuffer::from(input).as_byte_vec() == expected_result);
 }
+
