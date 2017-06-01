@@ -1,7 +1,9 @@
 mod consts;
 
+use std::fmt;
 use hex_char_byte_string::HexCharByteString;
 use hex_char::HexChar;
+use hex_char::consts::BITS_PER_HEX_CHAR;
 
 #[cfg(test)] mod unit_tests;
 
@@ -12,24 +14,26 @@ impl ByteBuffer {
     pub fn as_byte_vec(&self) -> Vec<u8> {
         self.0.clone()
     }
+
+    fn to_string(&self) -> String {
+        self.0.iter().fold(String::new(), |acc, &num| acc + &num.to_string() + ", ")
+    }
+}
+impl fmt::Display for ByteBuffer {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "[{}]", self.to_string())
+    }
+}
+
+impl From<ByteBuffer> for String {
+    fn from(byte_buffer: ByteBuffer) -> Self { ByteBuffer::to_string(&byte_buffer) }
 }
 
 impl From<HexCharByteString> for ByteBuffer {
     fn from(hex_char_byte_string: HexCharByteString) -> Self {
-        ByteBuffer(hex_char_byte_string.into_iter()
-                                  .map(|hcp| u8::from(hcp.0) << consts::BITS_PER_HEX_CHAR |
-                                            u8::from(hcp.1))
-                                  .collect())
-    }
-}
-
-impl From<HexChar> for u8 {
-    fn from(hex_char: HexChar) -> Self {
-        match hex_char.as_char() {
-            hc @ '0'...'9' => hc as u8 - '0' as u8,
-            hc @ 'A'...'F' => hc as u8 - 'A' as u8 + consts::HEX_A_VALUE,
-            hc @ 'a'...'f' => hc as u8 - 'a' as u8 + consts::HEX_A_VALUE,
-            _ => unreachable!(),
-        }
+        ByteBuffer(hex_char_byte_string.iter()
+                                       .map(|hex_char_pair| u8::from(hex_char_pair.0) << BITS_PER_HEX_CHAR |
+                                                            u8::from(hex_char_pair.1))
+                                       .collect())
     }
 }

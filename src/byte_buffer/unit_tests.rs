@@ -8,3 +8,26 @@ fn from_hex_byte_string_succeeds() {
 
     assert!(ByteBuffer::from(input).as_byte_vec() == expected_result);
 }
+
+#[test]
+fn implements_from_trait_for_string() {
+    let input = ByteBuffer::from(HexCharByteString::new("deadbeef").unwrap());
+    let expected_result =  0xde.to_string() + ", " +
+                          &0xad.to_string() + ", " +
+                          &0xbe.to_string() + ", " +
+                          &0xef.to_string() + ", ";
+
+    assert!(String::from(ByteBuffer::from(input)) == expected_result);
+}
+
+#[test]
+fn implements_to_string() {
+    let input = ByteBuffer::from(HexCharByteString::new("deadc0de").unwrap());
+    let expected_result =  0xde.to_string() + ", " +
+                          &0xad.to_string() + ", " +
+                          &0xc0.to_string() + ", " +
+                          &0xde.to_string() + ", ";
+
+    assert!(input.to_string() == expected_result);
+}
+

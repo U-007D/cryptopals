@@ -54,7 +54,7 @@ impl<'a> Iterator for Iter<'a> {
     fn next(&mut self) -> Option<HexCharPair> {
         match (self.iter.next(), self.iter.next()) {
             (Some(first), Some(last)) => Some((HexChar::new(first).expect(msgs::ERR_UNREACHABLE),
-                                              HexChar::new(last).expect(msgs::ERR_UNREACHABLE))),
+                                               HexChar::new(last).expect(msgs::ERR_UNREACHABLE))),
             (None, None) => None,
             _ => unreachable!(),
         }
@@ -82,7 +82,7 @@ impl Iterator for IntoIter {
     fn next(&mut self) -> Option<HexCharPair> {
         match (self.iter.next(), self.iter.next()) {
             (Some(first), Some(last)) => Some((HexChar::new(first).expect(msgs::ERR_UNREACHABLE),
-                                              HexChar::new(last).expect(msgs::ERR_UNREACHABLE))),
+                                               HexChar::new(last).expect(msgs::ERR_UNREACHABLE))),
             (None, None) => None,
             _ => unreachable!(),
         }
