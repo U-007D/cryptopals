@@ -1,12 +1,13 @@
 use super::*;
 
 use fluent_validator::Validator;
+use hex_char::IsHexChar;
 
 type Result<T> = std::result::Result<T, Error>;
 
 #[cfg(test)] mod unit_tests;
 
-impl<T: AsRef<str>> Validator<T> for HexByteString {
+impl<T: AsRef<str>> Validator<T> for HexCharByteString {
     fn validate(value: T) -> Result<T> {
         Ok(value.as_ref())
 
@@ -24,15 +25,11 @@ impl<T: AsRef<str>> Validator<T> for HexByteString {
 
             //value contains only valid hexadecimal characters?
             .and_then(|v| match v.chars()
-                                 .all(|c| match c {
-                                     '0' ... '9' |
-                                     'A' ... 'F' |
-                                     'a' ... 'f' => true,
-                                     _ => false,
-                                 }) {
+                                 .all(|c| c.is_hex_char()) {
                 true => Ok(v),
                 false => Err(Error::IllegalValue((msgs::VALDN_ERR_ILLEGAL_HEX_DIGIT.to_string()))),
             })?;
         Ok(value)
     }
 }
+
