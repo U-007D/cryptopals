@@ -3,16 +3,17 @@
 #![allow(non_camel_case_types)]
 #![warn(missing_debug_implementations, missing_copy_implementations, trivial_casts, trivial_numeric_casts, unused_import_braces, unused_qualifications)]
 #![deny(unused_must_use, overflowing_literals)]
+#![feature(try_from)]
 
-type GeneralError = Box<std::error::Error>;
-type GeneralResult<T> = std::result::Result<T, GeneralError>;
+extern crate fluent_validator;
 
 mod consts;
-use consts::msgs;
+mod byte_buffer;
+mod hex_char;
 
 #[cfg(test)]
 mod unit_tests;
 
-pub fn lib_main(_args: Vec<String>) -> GeneralResult<()> {
+pub fn run(_args: Vec<String>) -> Result<(), Box<std::error::Error>> {
     Ok(())
 }
