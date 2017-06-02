@@ -26,3 +26,19 @@ fn from_hex_str_rejects_illegal_hex_digit() {
     let input = "abcdefgh";
     assert!(if let Some(Error::IllegalValue(_)) = ByteBuffer::from_hex_str(input).err() { true } else { false });
 }
+
+#[test]
+fn implements_from_trait_for_string() {
+    let input = "deadbeef";
+    let expected_result = "222, 173, 190, 239, ".to_string();
+
+    assert!(String::from(ByteBuffer::from_hex_str(input).unwrap()) == expected_result);
+}
+
+#[test]
+fn implements_to_string() {
+    let input = "deadc0de";
+    let expected_result = "222, 173, 192, 222, ".to_string();
+
+    assert!(ByteBuffer::from_hex_str(input).unwrap().to_string() == expected_result);
+}

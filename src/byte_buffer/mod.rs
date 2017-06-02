@@ -3,6 +3,7 @@ mod validator;
 use std;
 use std::convert::TryFrom;
 use std::str::Chars;
+use std::fmt;
 use self::validator::{FluentValidator, HexStr};
 use hex_char;
 use hex_char::HexChar;
@@ -18,6 +19,10 @@ pub struct ByteBuffer(Vec<u8>);
 impl ByteBuffer {
     fn from_hex_str(init_value: &str) -> Result<ByteBuffer> {
         ByteBuffer::try_from(init_value)
+    }
+
+    fn to_string(&self) -> String {
+        self.0.iter().fold(String::new(), |acc, &num| acc + &num.to_string() + ", ")
     }
 }
 
@@ -61,4 +66,14 @@ impl<'a> Iterator for HexCharIter<'a> {
             _ => unreachable!(),
         }
     }
+}
+
+impl fmt::Display for ByteBuffer {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "[{}]", self.to_string())
+    }
+}
+
+impl From<ByteBuffer> for String {
+    fn from(byte_buffer: ByteBuffer) -> Self { ByteBuffer::to_string(&byte_buffer) }
 }
