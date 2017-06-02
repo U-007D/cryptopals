@@ -13,9 +13,7 @@ use super::consts::ERR_UNREACHABLE;
 type Result<T> = std::result::Result<T, validator::Error>;
 type HexCharPair = (HexChar, HexChar);
 
-pub struct ByteBuffer {
-    buf: Vec<u8>,
-}
+pub struct ByteBuffer(Vec<u8>);
 
 impl ByteBuffer {
     fn from_hex_str(init_value: &str) -> Result<ByteBuffer> {
@@ -27,13 +25,12 @@ impl<'a> TryFrom<&'a str> for ByteBuffer {
     type Error = validator::Error;
 
     fn try_from(init_value: &str) -> Result<ByteBuffer> {
-        Ok(ByteBuffer {
-                buf: init_value.validate::<HexStr>()?
-                               .hex_char_iter()
-                               .map(|hex_char_pair| u8::from(hex_char_pair.0) << hex_char::BITS_PER_HEX_CHAR |
-                                                    u8::from(hex_char_pair.1))
-                               .collect()
-        })
+        Ok(ByteBuffer(init_value.validate::<HexStr>()?
+                                .hex_char_iter()
+                                .map(|hex_char_pair| u8::from(hex_char_pair.0) << hex_char::BITS_PER_HEX_CHAR |
+                                                     u8::from(hex_char_pair.1))
+                                .collect()
+        ))
     }
 }
 
