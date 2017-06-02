@@ -14,3 +14,15 @@ fn from_hex_str_accepts_valid_input() {
     let input = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d";
     assert!(if let Some(ByteBuffer(_)) = ByteBuffer::from_hex_str(input).ok() { true } else { false });
 }
+
+#[test]
+fn from_hex_str_rejects_odd_length_hex_input() {
+    let input = "f";
+    assert!(if let Some(Error::InvalidSize(_)) = ByteBuffer::from_hex_str(input).err() { true } else { false });
+}
+
+#[test]
+fn from_hex_str_rejects_illegal_hex_digit() {
+    let input = "abcdefgh";
+    assert!(if let Some(Error::IllegalValue(_)) = ByteBuffer::from_hex_str(input).err() { true } else { false });
+}
