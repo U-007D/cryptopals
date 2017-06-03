@@ -2,10 +2,8 @@ use super::*;
 
 #[test]
 fn hex_char_iter_yields_char_pairs() {
-    let data = "1234";
-    let mut input = data.hex_char_iter();
-    let expected_results = [Some((HexChar::new('1').unwrap(), HexChar::new('2').unwrap())),
-        Some((HexChar::new('3').unwrap(), HexChar::new('4').unwrap())), None];
+    let mut input = HexChar::new("1234").iter();
+    let expected_results = [Some(('1', '2')), Some(('3', '4')), None];
 
     assert!(input.next() == expected_results[0]);
     assert!(input.next() == expected_results[1]);
@@ -14,9 +12,8 @@ fn hex_char_iter_yields_char_pairs() {
 
 #[test]
 fn into_hex_char_iter_yields_char_pairs() {
-    let mut input = "1234".into_hex_char_iter();
-    let expected_results = [Some((HexChar::new('1').unwrap(), HexChar::new('2').unwrap())),
-        Some((HexChar::new('3').unwrap(), HexChar::new('4').unwrap())), None];
+    let mut input = HexChar::new("1234").into_iter();
+    let expected_results = [Some(('1', '2')), Some(('3', '4')), None];
 
     assert!(input.next() == expected_results[0]);
     assert!(input.next() == expected_results[1]);

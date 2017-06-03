@@ -2,7 +2,8 @@ pub mod consts;
 
 use std;
 pub use self::consts::*;
-use hex_char::IsHexChar;
+use hex_char::FromCharExtTrait;
+use hex_byte_str::HexByteStr;
 
 pub use fluent_validator::{Validator, FluentValidator, Error};
 
@@ -10,9 +11,7 @@ type Result<T> = std::result::Result<T, Error>;
 
 #[cfg(test)] mod unit_tests;
 
-pub struct HexStr;
-
-impl<T: AsRef<str>> Validator<T> for HexStr {
+impl<'a, T: AsRef<str>> Validator<T> for HexByteStr<'a> {
     fn validate(value: T) -> Result<T> {
         Ok(value.as_ref())
 

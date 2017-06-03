@@ -1,39 +1,33 @@
-mod validator;
-
 use std;
-use std::convert::TryFrom;
 use std::fmt;
-use self::validator::{FluentValidator, HexStr};
 use hex_char;
-use hex_char::HexCharExtTrait;
+use hex_char::HexValue;
+use hex_byte_str;
+use hex_byte_str::{HexByteStr, Iter};
 
 #[cfg(test)] mod unit_tests;
 
-type Result<T> = std::result::Result<T, validator::Error>;
+type Result<T> = std::result::Result<T, hex_byte_str::validator::Error>;
 
 #[derive(Debug)]
 pub struct ByteBuffer(Vec<u8>);
 
 impl ByteBuffer {
-    fn from_hex_str(init_value: &str) -> Result<ByteBuffer> {
-        ByteBuffer::try_from(init_value)
+    pub fn from_hex_str<T: AsRef<str>>(init_value: T) -> Result<ByteBuffer> {
+        Ok(ByteBuffer(HexByteStr::new(init_value.as_ref())?
+                          .into_iter()
+                          .map(|hex_char_pair| hex_char_pair.0.as_hex_value() << hex_char::BITS_PER_HEX_CHAR |
+                                               hex_char_pair.1.as_hex_value())
+                          .collect()
+        ))
     }
+
+//    pub fn to_hex_string(&self) -> String {
+//
+//    }
 
     fn to_string(&self) -> String {
-        self.0.iter().fold(String::new(), |acc, &num| acc + &num.to_string() + ", ")
-    }
-}
-
-impl<'a> TryFrom<&'a str> for ByteBuffer {
-    type Error = validator::Error;
-
-    fn try_from(init_value: &str) -> Result<ByteBuffer> {
-        Ok(ByteBuffer(init_value.validate::<HexStr>()?
-                                .hex_char_iter()
-                                .map(|hex_char_pair| u8::from(hex_char_pair.0) << hex_char::BITS_PER_HEX_CHAR |
-                                                     u8::from(hex_char_pair.1))
-                                .collect()
-        ))
+        self.0.iter().fold(String::new(), |acc, &byte| acc + &byte.to_string() + ", ")
     }
 }
 
@@ -44,5 +38,5 @@ impl fmt::Display for ByteBuffer {
 }
 
 impl From<ByteBuffer> for String {
-    fn from(byte_buffer: ByteBuffer) -> Self { ByteBuffer::to_string(&byte_buffer) }
+    fn from(byte_buffer: ByteBuffer) -> Self { byte_buffer.to_string() }
 }

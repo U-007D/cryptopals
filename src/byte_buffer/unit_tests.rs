@@ -1,10 +1,11 @@
 use super::*;
-use self::validator::*;
+use hex_byte_str::validator;
+use hex_byte_str::validator::Error;
 
 #[test]
 fn from_hex_str_rejects_empty_input() {
     let input = "";
-    let expected_result = Error::EmptyValue(VAL_ERR_EMPTY_VALUE.to_string());
+    let expected_result = Error::EmptyValue(validator::VAL_ERR_EMPTY_VALUE.to_string());
 
     assert!(ByteBuffer::from_hex_str(input).err().unwrap() == expected_result);
 }
