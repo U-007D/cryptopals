@@ -4,6 +4,7 @@ name = "cryptopals"
 version = "0.1.0"
 
 [dependencies]
+owned_chars = "0.2.1"
 
 [dependencies.fluent_validator]
 git = "https://github.com/U-007D/fluent_validator.git"

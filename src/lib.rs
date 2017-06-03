@@ -6,6 +6,7 @@
 #![feature(try_from)]
 
 extern crate fluent_validator;
+extern crate owned_chars;
 
 mod consts;
 mod byte_buffer;
