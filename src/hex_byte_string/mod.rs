@@ -3,19 +3,21 @@ pub mod validator;
 use std;
 use std::fmt;
 use std::str::Chars;
-use consts::*;
+
 use owned_chars::{OwnedChars, OwnedCharsExt};
+
+use consts::*;
 use fluent_validator::{FluentValidator, Error};
 use byte_buffer::ByteBuffer;
 use hex_char;
-use hex_char::HexChar;
-use hex_value::{HexValue, HexValueExt};
+use hex_char::{HexChar, HexValueExt};
 
 type Result<T> = std::result::Result<T, Error>;
 pub type HexCharPair = (HexChar, HexChar);
 
 #[cfg(test)] mod unit_tests;
 
+/// Represents a series of bytes in hexadecimal.  Must contain an even number of characters to properly represent bytes.
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct HexByteString(String);
 
@@ -37,12 +39,14 @@ impl fmt::Display for HexByteString {
     }
 }
 
+/// Provides Into<HexByteString> (not used in this project at this point)
 impl From<HexByteString> for String {
     fn from(hex_byte_string: HexByteString) -> Self {
         hex_byte_string.0
     }
 }
 
+/// State object for Iterator (non-owning)
 #[derive(Debug)]
 pub struct Iter<'a> {
     iter: Chars<'a>,
@@ -62,6 +66,7 @@ impl<'a> Iterator for Iter<'a> {
     }
 }
 
+/// State object for IntoIterator (owning)
 #[derive(Debug)]
 pub struct IntoIter {
     iter: OwnedChars,
@@ -90,6 +95,11 @@ impl Iterator for IntoIter {
     }
 }
 
+/// Non-owning IntoIterator implementation (DRY--based on Iterator).  Principal benefit is enabling non-consuming for
+/// loops (eg. `for item in &collection {...}` where `collection` remains available after the loop).
+/// All HexByteString iterators return a pair of `char`s because a pair of hexadecimal digits are required to represent
+/// a byte.  This also substatially reduces the amount of state required for anyone iterating over HexByteString, as the
+/// state of which byte is being iterated is centralized into the type's iterator.
 impl<'a> IntoIterator for &'a HexByteString {
     type Item = HexCharPair;
     type IntoIter = Iter<'a>;
@@ -99,12 +109,13 @@ impl<'a> IntoIterator for &'a HexByteString {
     }
 }
 
+/// Also provides Into<ByteBuffer> (not used in this project at this time)
 impl From<ByteBuffer> for HexByteString {
     fn from(byte_buffer: ByteBuffer) -> Self {
         //TODO: Refactor to be w/o allocations?
-        HexByteString::new(byte_buffer.clone().into_iter()
+        HexByteString::new(byte_buffer.iter()
                 .flat_map(|byte| vec![(byte >> hex_char::BITS_PER_HEX_DIGIT).as_hex_char().expect(ERR_UNREACHABLE),
                                       (byte & hex_char::U8_MASK_MSN).as_hex_char().expect(ERR_UNREACHABLE)].into_iter())
-                .collect::<String>()).ok().expect(msgs::ERR_UNREACHABLE)
+                .collect::<String>()).ok().expect(ERR_UNREACHABLE)
     }
 }

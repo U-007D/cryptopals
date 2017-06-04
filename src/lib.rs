@@ -10,9 +10,6 @@ extern crate fluent_validator;
 extern crate owned_chars;
 
 mod consts;
-mod hex_byte_string;
 mod byte_buffer;
+mod hex_byte_string;
 mod hex_char;
-mod hex_value;
-
-use consts::*;

@@ -30,4 +30,3 @@ fn implements_to_string() {
 
     assert!(input.to_string() == expected_result);
 }
-

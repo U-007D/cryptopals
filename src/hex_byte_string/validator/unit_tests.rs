@@ -20,7 +20,7 @@ fn accepts_valid_string() {
 #[test]
 fn rejects_empty_str() {
     let input = "";
-    let expected_result = Err(Error::EmptyValue(msgs::VAL_ERR_EMPTY_VALUE.to_string()));
+    let expected_result = Err(Error::EmptyValue(VAL_ERR_EMPTY_VALUE.to_string()));
 
     assert!(input.validate::<HexByteString>() == expected_result);
 }
@@ -28,7 +28,7 @@ fn rejects_empty_str() {
 #[test]
 fn rejects_odd_length_str() {
     let input = "6";
-    let expected_result = Err(Error::InvalidSize(msgs::VAL_ERR_INVALID_SIZE.to_string()));
+    let expected_result = Err(Error::InvalidSize(VAL_ERR_INVALID_SIZE.to_string()));
 
     assert!(input.validate::<HexByteString>() == expected_result);
 }
@@ -36,7 +36,7 @@ fn rejects_odd_length_str() {
 #[test]
 fn rejects_invalid_hex_char_in_str() {
     let input = "12345x";
-    let expected_result = Err(Error::IllegalValue(msgs::VAL_ERR_ILLEGAL_HEX_DIGIT.to_string()));
+    let expected_result = Err(Error::IllegalValue(VAL_ERR_ILLEGAL_HEX_DIGIT.to_string()));
 
     assert!(input.validate::<HexByteString>() == expected_result);
 }

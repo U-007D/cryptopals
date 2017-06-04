@@ -2,6 +2,10 @@ use consts::*;
 //TODO: Refactor hex_char and hex_value as peer submodules sharing same const folders
 use hex_char::consts;
 
+/// Semantic typing for values as hexadecimal digits.  Ensures types intended to contain hexadecimal values are kept
+/// both distinct and distinguishable from general values.  Allows APIs to enforcably express expectations, and permits
+/// use of these values without having to validate before each use.  Note: all possible construction methods go through
+/// validation to ensure that all instances of the type are guaranteed to be valid.
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub struct HexValue(u8);
 
@@ -22,6 +26,7 @@ impl HexValue {
     }
 }
 
+/// Extension Trait for ensuring correct range on values and/or converting values to hexadecimal characters
 pub trait HexValueExt {
     fn is_hex_value(&self) -> bool;
     fn as_hex_char(&self) -> Option<char>;
