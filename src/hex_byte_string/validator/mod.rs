@@ -7,6 +7,7 @@ use self::consts::*;
 
 use hex_byte_string::HexByteString;
 use hex_byte_string::hex_char::IsHexChar;
+use base_64_string::base_64_char::IsBase64Char;
 
 type Result<T> = result::Result<T, Error>;
 
@@ -22,7 +23,7 @@ impl<T: AsRef<str>> Validator<T> for HexByteString {
                 false => Err(Error::EmptyValue(VAL_ERR_EMPTY_VALUE.to_string())),
             })
 
-            //value defines whole bytes (contains an even number of hex digits)?
+            //value defines whole bytes (contains an even number of digits)?
             .and_then(|v| match v.len() % 2 == 0 {
                 true => Ok(v),
                 false => Err(Error::InvalidSize(VAL_ERR_INVALID_SIZE.to_string())),
@@ -37,4 +38,3 @@ impl<T: AsRef<str>> Validator<T> for HexByteString {
         Ok(value)
     }
 }
-

@@ -12,3 +12,4 @@ extern crate owned_chars;
 mod consts;
 mod byte_buffer;
 mod hex_byte_string;
+mod base_64_string;
