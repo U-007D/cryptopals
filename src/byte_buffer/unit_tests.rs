@@ -2,7 +2,7 @@ use super::*;
 
 #[test]
 fn from_hex_byte_string_succeeds() {
-    let input = HexCharByteString::new("00112233445566778899aabbccddeeff").unwrap();
+    let input = HexByteString::new("00112233445566778899aabbccddeeff").unwrap();
     let expected_result = vec![0x00u8, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
                                0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff];
 
@@ -11,7 +11,7 @@ fn from_hex_byte_string_succeeds() {
 
 #[test]
 fn implements_from_trait_for_string() {
-    let input = ByteBuffer::from(HexCharByteString::new("deadbeef").unwrap());
+    let input = ByteBuffer::from(HexByteString::new("deadbeef").unwrap());
     let expected_result =  0xde.to_string() + ", " +
                           &0xad.to_string() + ", " +
                           &0xbe.to_string() + ", " +
@@ -22,7 +22,7 @@ fn implements_from_trait_for_string() {
 
 #[test]
 fn implements_to_string() {
-    let input = ByteBuffer::from(HexCharByteString::new("deadc0de").unwrap());
+    let input = ByteBuffer::from(HexByteString::new("deadc0de").unwrap());
     let expected_result =  0xde.to_string() + ", " +
                           &0xad.to_string() + ", " +
                           &0xc0.to_string() + ", " +

@@ -1,14 +1,15 @@
-mod consts;
-use self::consts::msgs;
-use super::fluent_validator::{FluentValidator, Error};
 pub mod validator;
 
 use std;
 use std::fmt;
-use byte_buffer::ByteBuffer;
 use std::str::Chars;
+use consts::*;
 use owned_chars::{OwnedChars, OwnedCharsExt};
+use fluent_validator::{FluentValidator, Error};
+use byte_buffer::ByteBuffer;
+use hex_char;
 use hex_char::HexChar;
+use hex_value::{HexValue, HexValueExt};
 
 type Result<T> = std::result::Result<T, Error>;
 pub type HexCharPair = (HexChar, HexChar);
@@ -16,11 +17,11 @@ pub type HexCharPair = (HexChar, HexChar);
 #[cfg(test)] mod unit_tests;
 
 #[derive(Debug, PartialEq, Eq, Clone)]
-pub struct HexCharByteString(String);
+pub struct HexByteString(String);
 
-impl HexCharByteString {
-    pub fn new<T: AsRef<str>>(value: T) -> Result<HexCharByteString> {
-        Ok(HexCharByteString(value.as_ref().validate::<HexCharByteString>()?.to_string()))
+impl HexByteString {
+    pub fn new<T: AsRef<str>>(value: T) -> Result<HexByteString> {
+        Ok(HexByteString(value.as_ref().validate::<HexByteString>()?.to_string()))
     }
 
     pub fn iter(&self) -> Iter {
@@ -30,14 +31,14 @@ impl HexCharByteString {
     pub fn as_str(&self) -> &str { &self.0 }
 }
 
-impl fmt::Display for HexCharByteString {
+impl fmt::Display for HexByteString {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self.0)
     }
 }
 
-impl From<HexCharByteString> for String {
-    fn from(hex_byte_string: HexCharByteString) -> Self {
+impl From<HexByteString> for String {
+    fn from(hex_byte_string: HexByteString) -> Self {
         hex_byte_string.0
     }
 }
@@ -53,8 +54,8 @@ impl<'a> Iterator for Iter<'a> {
     //TODO: DRY Iterator for Iter's & IntoIter's next() implementations (see below)
     fn next(&mut self) -> Option<HexCharPair> {
         match (self.iter.next(), self.iter.next()) {
-            (Some(first), Some(last)) => Some((HexChar::new(first).expect(msgs::ERR_UNREACHABLE),
-                                               HexChar::new(last).expect(msgs::ERR_UNREACHABLE))),
+            (Some(first), Some(last)) => Some((HexChar::new(first).expect(ERR_UNREACHABLE),
+                                               HexChar::new(last).expect(ERR_UNREACHABLE))),
             (None, None) => None,
             _ => unreachable!(),
         }
@@ -66,7 +67,7 @@ pub struct IntoIter {
     iter: OwnedChars,
 }
 
-impl IntoIterator for HexCharByteString {
+impl IntoIterator for HexByteString {
     type Item = HexCharPair;
     type IntoIter = IntoIter;
 
@@ -81,15 +82,15 @@ impl Iterator for IntoIter {
     //TODO: DRY Iterator for Iter's & IntoIter's next() implementations (see above)
     fn next(&mut self) -> Option<HexCharPair> {
         match (self.iter.next(), self.iter.next()) {
-            (Some(first), Some(last)) => Some((HexChar::new(first).expect(msgs::ERR_UNREACHABLE),
-                                               HexChar::new(last).expect(msgs::ERR_UNREACHABLE))),
+            (Some(first), Some(last)) => Some((HexChar::new(first).expect(ERR_UNREACHABLE),
+                                               HexChar::new(last).expect(ERR_UNREACHABLE))),
             (None, None) => None,
             _ => unreachable!(),
         }
     }
 }
 
-impl<'a> IntoIterator for &'a HexCharByteString {
+impl<'a> IntoIterator for &'a HexByteString {
     type Item = HexCharPair;
     type IntoIter = Iter<'a>;
 
@@ -98,8 +99,12 @@ impl<'a> IntoIterator for &'a HexCharByteString {
     }
 }
 
-impl From<ByteBuffer> for HexCharByteString {
+impl From<ByteBuffer> for HexByteString {
     fn from(byte_buffer: ByteBuffer) -> Self {
-        HexCharByteString::new("0123456789abcdef").ok().unwrap()
+        //TODO: Refactor to be w/o allocations?
+        HexByteString::new(byte_buffer.clone().into_iter()
+                .flat_map(|byte| vec![(byte >> hex_char::BITS_PER_HEX_DIGIT).as_hex_char().expect(ERR_UNREACHABLE),
+                                      (byte & hex_char::U8_MASK_MSN).as_hex_char().expect(ERR_UNREACHABLE)].into_iter())
+                .collect::<String>()).ok().expect(msgs::ERR_UNREACHABLE)
     }
 }
