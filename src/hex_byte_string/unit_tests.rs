@@ -67,3 +67,11 @@ fn from_byte_buffer_succeeds() {
 
     assert!(HexByteString::from(input) == expected_result);
 }
+
+#[test]
+fn can_round_trip_to_byte_buffer_and_back() {
+    let input = HexByteString::new("0123456789abcdef").unwrap();
+    let expected_result = input.clone();
+
+    assert!(HexByteString::from(ByteBuffer::from(input)) == expected_result);
+}
