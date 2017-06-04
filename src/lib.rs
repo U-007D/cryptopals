@@ -12,4 +12,3 @@ extern crate owned_chars;
 mod consts;
 mod byte_buffer;
 mod hex_byte_string;
-mod hex_char;

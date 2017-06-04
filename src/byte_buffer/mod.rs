@@ -1,10 +1,10 @@
-mod consts;
-
 use std::fmt;
 use std::ops;
 
+mod consts;
+
+use hex_byte_string;
 use hex_byte_string::HexByteString;
-use hex_char::consts::BITS_PER_HEX_DIGIT;
 
 #[cfg(test)] mod unit_tests;
 
@@ -37,9 +37,9 @@ impl From<ByteBuffer> for String {
 
 /// Gives Into<ByteBuffer> methods (not used in this project at this point)
 impl From<HexByteString> for ByteBuffer {
-    fn from(hex_char_byte_string: HexByteString) -> Self {
-        ByteBuffer(hex_char_byte_string.iter()
-                                       .map(|hex_char_pair| u8::from(hex_char_pair.0) << BITS_PER_HEX_DIGIT |
+    fn from(hex_byte_string: HexByteString) -> Self {
+        ByteBuffer(hex_byte_string.iter()
+                                       .map(|hex_char_pair| u8::from(hex_char_pair.0) << hex_byte_string::BITS_PER_HEX_DIGIT |
                                                             u8::from(hex_char_pair.1))
                                        .collect())
     }

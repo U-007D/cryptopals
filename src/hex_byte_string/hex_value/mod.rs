@@ -1,6 +1,5 @@
 use consts::*;
-//TODO: Refactor hex_char and hex_value as peer submodules sharing same const folders
-use hex_char::consts;
+use hex_byte_string;
 
 /// Semantic typing for values as hexadecimal digits.  Ensures types intended to contain hexadecimal values are kept
 /// both distinct and distinguishable from general values.  Allows APIs to enforcably express expectations, and permits
@@ -41,7 +40,7 @@ impl HexValueExt for u8 {
     }
 
     fn as_hex_char(&self) -> Option<char> {
-        consts::HEX_DIGITS.chars().nth(*self as  usize)
+        hex_byte_string::HEX_DIGITS.chars().nth(*self as  usize)
     }
 
 //TODO: Determine if using From is preferable to as_hex_char()

@@ -1,16 +1,20 @@
-pub mod validator;
-
 use std;
 use std::fmt;
 use std::str::Chars;
 
 use owned_chars::{OwnedChars, OwnedCharsExt};
 
+mod consts;
+pub mod validator;
+mod hex_char;
+mod hex_value;
+
 use consts::*;
+pub use self::consts::*;
 use fluent_validator::{FluentValidator, Error};
 use byte_buffer::ByteBuffer;
-use hex_char;
-use hex_char::{HexChar, HexValueExt};
+use self::hex_char::HexChar;
+use self::hex_value::HexValueExt;
 
 type Result<T> = std::result::Result<T, Error>;
 pub type HexCharPair = (HexChar, HexChar);
@@ -114,8 +118,8 @@ impl From<ByteBuffer> for HexByteString {
     fn from(byte_buffer: ByteBuffer) -> Self {
         //TODO: Refactor to be w/o allocations?
         HexByteString::new(byte_buffer.iter()
-                .flat_map(|byte| vec![(byte >> hex_char::BITS_PER_HEX_DIGIT).as_hex_char().expect(ERR_UNREACHABLE),
-                                      (byte & hex_char::U8_MASK_MSN).as_hex_char().expect(ERR_UNREACHABLE)].into_iter())
+                .flat_map(|byte| vec![(byte >> BITS_PER_HEX_DIGIT).as_hex_char().expect(ERR_UNREACHABLE),
+                                      (byte & U8_MASK_MSN).as_hex_char().expect(ERR_UNREACHABLE)].into_iter())
                 .collect::<String>()).ok().expect(ERR_UNREACHABLE)
     }
 }

@@ -1,10 +1,12 @@
+use std::result;
+
+use fluent_validator::{Validator, Error};
+
 mod consts;
 use self::consts::*;
 
-use std::result;
-use fluent_validator::{Validator, Error};
-use hex_char::IsHexChar;
 use hex_byte_string::HexByteString;
+use hex_byte_string::hex_char::IsHexChar;
 
 type Result<T> = result::Result<T, Error>;
 

@@ -1,7 +1,4 @@
-pub mod consts;
-pub use self::consts::*;
-pub mod hex_value;
-pub use self::hex_value::{HexValue, HexValueExt};
+use hex_byte_string;
 
 /// Semantic type for a hexadecimal character.  Not possible to encode a non-hexadecimal character in this type, so
 /// consumers of this type are guaranteed valid hexadecimal input.
@@ -44,8 +41,8 @@ impl From<HexChar> for u8 {
     fn from(hex_char: HexChar) -> Self {
         match hex_char.as_char() {
             ch @ '0'...'9' => ch as u8 - '0' as u8,
-            ch @ 'A'...'F' => ch as u8 - 'A' as u8 + HEX_A_VALUE,
-            ch @ 'a'...'f' => ch as u8 - 'a' as u8 + HEX_A_VALUE,
+            ch @ 'A'...'F' => ch as u8 - 'A' as u8 + hex_byte_string::HEX_A_VALUE,
+            ch @ 'a'...'f' => ch as u8 - 'a' as u8 + hex_byte_string::HEX_A_VALUE,
             _ => unreachable!(),
         }
     }
